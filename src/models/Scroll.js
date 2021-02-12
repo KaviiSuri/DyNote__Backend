@@ -30,6 +30,10 @@ const scrollSchema = new mongoose.Schema({
     ref: "Workspace",
     required: true,
   },
+  public: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Scroll = mongoose.model("Scroll", scrollSchema);
