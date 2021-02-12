@@ -30,7 +30,7 @@ router.post(
       throw err;
     }
     // create new user
-    let user = new User({
+    user = new User({
       firebase_id: firebase_id,
       username: req.body.username,
       workspace: [],
