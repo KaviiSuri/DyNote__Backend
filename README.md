@@ -1,5 +1,8 @@
 # nodejs-backend-template
 
+The `main` branch will be in CD with Heroku [here](https://dynote.herokuapp.com/), development may go on in `main` or other branches.
+
+
 ## Info
 
 This repo is for backend of **DyNote**
