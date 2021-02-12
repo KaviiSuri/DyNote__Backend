@@ -12,12 +12,20 @@ function connectDB() {
       )
     );
   }
-  mongoose.connect(url, (err) => {
-    if (err) {
-      console.log(chalk.bgRed("Error"));
-      console.error(err);
-    } else console.info(chalk.green("Database Connected!"));
-  });
+  mongoose.connect(
+    url,
+    {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    },
+    (err) => {
+      if (err) {
+        console.log(chalk.bgRed("Error"));
+        console.error(err);
+      } else console.info(chalk.green("Database Connected!"));
+    }
+  );
 }
 
 module.exports = connectDB;
