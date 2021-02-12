@@ -3,6 +3,7 @@ const chalk = require("chalk");
 
 function connectDB() {
   var url = process.env.MONGO_URL;
+  process.env.LOG_DB && console.log(url);
   if (process.env.DB_MODE === "local" || url === "" || !url) {
     url = "mongodb://localhost:27017/DyNote";
     console.info(

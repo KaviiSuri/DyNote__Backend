@@ -1,5 +1,7 @@
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
+} else {
+  console.log("Running in PRODUCTION");
 }
 const app = require("./src/app");
 const http = require("http");
