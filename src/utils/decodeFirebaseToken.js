@@ -1,5 +1,6 @@
-const {firebaseAuth} = require('../firebaseAdminApp')
+const { firebaseAuth } = require("../firebaseAdminApp");
 
-module.exports = function(idToken) {
-  return (await firebaseAuth.verifyIdToken(idToken)).uid;
-}
+module.exports = async function (idToken) {
+  const { uid } = await firebaseAuth.verifyIdToken(idToken);
+  return uid;
+};

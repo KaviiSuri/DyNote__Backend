@@ -11,7 +11,7 @@ const isAuthenticated = asyncHandler(async (req, res, next) => {
     error.name = "AuthError";
     throw error;
   }
-  const firebase_id = decodeFirebaseToken(idToken);
+  const firebase_id = await decodeFirebaseToken(idToken);
   const user = await User.findByFirebaseId(firebase_id);
   if (user) {
     req.user = user;
