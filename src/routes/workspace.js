@@ -20,12 +20,11 @@ router.post(
       throw err;
     }
     // create workspace
-    const workspace = await Workspace({
+    const workspace = await Workspace.create({
       name: req.body.name,
       notebooks: [],
       owner: req.user,
     });
-
     // add to owner
     req.user.workspaces.push(workspace._id);
     await req.user.save();
