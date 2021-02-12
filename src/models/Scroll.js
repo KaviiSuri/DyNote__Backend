@@ -1,4 +1,4 @@
-const mongoose = requrie("mongoose");
+const mongoose = require("mongoose");
 
 const scrollSchema = new mongoose.Schema({
   name: {
@@ -14,7 +14,7 @@ const scrollSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    requried: true,
+    required: true,
   },
   vid_link: {
     type: String,
@@ -23,7 +23,7 @@ const scrollSchema = new mongoose.Schema({
   notebook: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Notebook",
-    requried: true,
+    required: true,
   },
   workspace: {
     type: mongoose.Schema.Types.ObjectId,
