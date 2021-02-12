@@ -57,14 +57,19 @@ router.delete(
   "/:_id",
   isAuthenticated,
   asyncHandler(async (req, res) => {
-    if (!req.user.workspaces.includes(req.params._id)) {
+    const { user } = req;
+    const { _id } = req.params;
+    if (!user.workspaces.includes(_id)) {
       const err = new Error("Unauthorized to view this workspace");
       err.statusCode = 401;
       err.name = "AuthError";
       throw err;
     }
     // delete workspace
-    await Workspace.deleteOne({ _id: req.params._id });
+    await Workspace.deleteOne({ _id: _id });
+    const workspaces = user.workspaces.filter((id) => id.toString() !== _id);
+    user.workspaces = workspaces;
+    await user.save();
     res.status(204).send();
   })
 );
