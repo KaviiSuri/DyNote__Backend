@@ -17,10 +17,6 @@ const noteSchema = new mongoose.Schema({
   content: {
     type: any,
   },
-  heading: {
-    type: String,
-    required: true,
-  },
 });
 
 const Note = mongoose.model("Note", noteSchema);
