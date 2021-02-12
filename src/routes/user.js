@@ -24,9 +24,16 @@ router.post(
     let user = User.findByFirebaseId(firebase_id);
     // user already exists
     if (user) {
-      err = new Error("User already exists, try signing in");
-      err.statusCode = 409;
-      err.name = "AuthError";
+      // err = new Error("User already exists, try signing in");
+      // err.statusCode = 409;
+      // err.name = "AuthError";
+      // throw err;
+      res.status(200).json(user);
+    }
+    if (!req.body.username || req.body.username.length == 0) {
+      err = new Error("username is required");
+      err.statusCode = 400;
+      err.name = "BadRequest";
       throw err;
     }
     // create new user
