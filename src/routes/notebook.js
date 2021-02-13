@@ -46,7 +46,7 @@ router.get(
   isAuthenticated,
   asyncHandler(async (req, res) => {
     // does the current user own this?
-    const notebook = await (await Notebook.findById(req.params._id)).populate(
+    const notebook = await Notebook.findById(req.params._id).populate(
       "scrolls",
       "name _id public vid_link"
     );
