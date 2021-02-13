@@ -44,13 +44,22 @@ router.post(
       throw err;
     }
     // create new user
-    user = new User({
+    user = await User.create({
       firebase_id: firebase_id,
       username: req.body.username,
       workspaces: [],
     });
-
+    defaultWorkspace = await workspace.create({
+      name: `${req.body.username.split(" ")[0]}'s Workspace`,
+      notebooks: [],
+      owner: user._id,
+    });
+    user.workspaces.push(defaultWorkspace);
     await user.save();
+
+    user.workspaces = [
+      { _id: defaultWorkspace._id, name: defaultWorkspace.name },
+    ];
     res.status(201).json(user);
   })
 );
