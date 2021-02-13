@@ -41,10 +41,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const firebase_id = decodeFirebaseToken(req.headers.firebase_token);
     let user = User.findByFirebaseId(firebase_id);
-    const scroll = await Scroll.findById(req.params._id).populate(
-      "notes",
-      "name start_time _id"
-    );
+    const scroll = await Scroll.findById(req.params._id).populate("notes");
     if (!scroll) {
       err = new Error("Scroll Not Found");
       err.statusCode = 404;
