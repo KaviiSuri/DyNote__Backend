@@ -2,20 +2,18 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const path = require("path");
 const thisFile = path.basename(__filename);
-const Notebook=require("../models/Notebook");
-const {isAuthenticated}=require("../middlewares/auth");
+const Notebook = require("../models/Notebook");
+const { isAuthenticated } = require("../middlewares/auth");
 const Workspace = require("../models/Workspace");
-
 
 router.get("/test", (req, res) => {
   res.json({ success: true, message: `Router ${thisFile}  Working!` });
 });
 
 router.post(
-  "/", 
+  "/",
   isAuthenticated,
-  asyncHandler(async,(req,res)=>
-  {
+  asyncHandler(async (req, res) => {
     if (!req.body.name || req.body.name.length == 0) {
       err = new Error("Notebook name is required");
       err.statusCode = 400;
@@ -30,15 +28,15 @@ router.post(
       throw err;
     }
     //create notebook
-    const notebook=await Notebook.create({
-        name:req.body.name,
-        scrolls: [],
-        owner: req.user,
-        workspace: req.body.workspace_id,
+    const notebook = await Notebook.create({
+      name: req.body.name,
+      scrolls: [],
+      owner: req.user,
+      workspace: req.body.workspace_id,
     });
     const workspace = await Workspace.findById(req.body.workspace_id);
     workspace.notebooks.push(notebook._id);
-    await workspace.save()
+    await workspace.save();
     res.status(201).json(notebook);
   })
 );
@@ -48,9 +46,11 @@ router.get(
   isAuthenticated,
   asyncHandler(async (req, res) => {
     // does the current user own this?
-    const notebook = await (await Notebook.findById(req.params._id)).populate("scrolls", "name _id public vid_link");
-    if(!notebook)
-    {
+    const notebook = await (await Notebook.findById(req.params._id)).populate(
+      "scrolls",
+      "name _id public vid_link"
+    );
+    if (!notebook) {
       const err = new Error("Notebook is not available");
       err.statusCode = 404;
       err.name = "Not Found";
@@ -86,13 +86,15 @@ router.delete(
     }
     // query 2 - remvoe from parent workspace
     const workspace = Workspace.findById(notebook.workspace);
-    workspace.notebooks = workspace.notebooks.filter(id => id.toString() !== notebook._id.toString())
-    await workspace.save()
+    workspace.notebooks = workspace.notebooks.filter(
+      (id) => id.toString() !== notebook._id.toString()
+    );
+    await workspace.save();
     // query 3 - delete the notebook
-    await Notebook.deleteOne({_id: req.params._id});
+    await Notebook.deleteOne({ _id: req.params._id });
 
     res.status(204).send();
   })
 );
-  
+
 module.exports = router;
