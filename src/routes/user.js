@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 const path = require("path");
 const { isAuthenticated } = require("../middlewares/auth");
 const User = require("../models/User");
+const Workspace = require("../models/Workspace");
 const decodeFirebaseToken = require("../utils/decodeFirebaseToken");
 const thisFile = path.basename(__filename);
 
