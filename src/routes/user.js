@@ -49,7 +49,7 @@ router.post(
       username: req.body.username,
       workspaces: [],
     });
-    defaultWorkspace = await workspace.create({
+    defaultWorkspace = await Workspace.create({
       name: `${req.body.username.split(" ")[0]}'s Workspace`,
       notebooks: [],
       owner: user._id,
