@@ -37,7 +37,8 @@ router.post(
     });
     // const scroll = await Scroll.findById(req.body.scroll_id);
     scroll.notes.push(note._id);
-    await scrolls.save();
+    await scroll.save();
+    console.log(note);
     res.status(201).json(note);
   })
 );
