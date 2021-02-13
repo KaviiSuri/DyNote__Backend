@@ -2,6 +2,8 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const path = require("path");
 const thisFile = path.basename(__filename);
+const User = require("../models/User");
+const Note = require("../models/Note");
 const Scroll = require("../models/Scroll");
 const Notebook = require("../models/Notebook");
 const { isAuthenticated } = require("../middlewares/auth");
@@ -39,8 +41,8 @@ router.post(
 router.get(
   "/:_id",
   asyncHandler(async (req, res) => {
-    const firebase_id = decodeFirebaseToken(req.headers.firebase_token);
-    let user = User.findByFirebaseId(firebase_id);
+    const firebase_id = await decodeFirebaseToken(req.headers.firebase_token);
+    let user = await User.findByFirebaseId(firebase_id);
     const scroll = await Scroll.findById(req.params._id).populate("notes");
     if (!scroll) {
       err = new Error("Scroll Not Found");
@@ -49,7 +51,11 @@ router.get(
       throw err;
     }
 
-    if (!scroll.public && scroll.owner.toString() !== user._id.toString()) {
+    if (
+      !scroll.public &&
+      user &&
+      scroll.owner.toString() !== user._id.toString()
+    ) {
       err = new Error("Scroll is not public");
       err.statusCode = 401;
       err.name = "AuthError";

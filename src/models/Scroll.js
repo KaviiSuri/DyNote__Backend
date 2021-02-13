@@ -8,7 +8,7 @@ const scrollSchema = new mongoose.Schema({
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "notes",
+      ref: "Note",
     },
   ],
   owner: {
