@@ -46,7 +46,7 @@ router.get(
     // find workspace
     const workspace = await Workspace.findById(req.params._id).populate(
       "notebooks",
-      "name _id"
+      "name _id scrolls"
     );
     res.status(200).json(workspace);
   })
