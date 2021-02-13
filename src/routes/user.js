@@ -20,16 +20,22 @@ router.post(
   "/",
   asyncHandler(async (req, res) => {
     const idToken = req.headers.firebase_token;
-    const firebase_id = decodeFirebaseToken(idToken);
-    let user = User.findByFirebaseId(firebase_id);
+    const firebase_id = await decodeFirebaseToken(idToken);
+    let user = await User.findByFirebaseId(firebase_id);
     // user already exists
     if (user) {
       // err = new Error("User already exists, try signing in");
       // err.statusCode = 409;
       // err.name = "AuthError";
       // throw err;
-      await user.populate("workspaces", "name _id").execPopulate();
-      res.status(200).json(user);
+      console.log(user);
+      const resUser = await User.findById(user._id).populate(
+        "workspaces",
+        "name _id"
+      );
+
+      res.status(200).json(resUser);
+      return;
     }
     if (!req.body.username || req.body.username.length == 0) {
       err = new Error("username is required");
