@@ -44,10 +44,16 @@ router.get(
       throw err;
     }
     // find workspace
-    const workspace = await Workspace.findById(req.params._id).populate(
-      "notebooks",
-      "name _id scrolls"
-    );
+    const workspace = await Workspace.findById(req.params._id).populate({
+      path: "notebooks",
+      select: "name _id scrolls",
+      populate: {
+        path: "scrolls",
+        model: "Scroll",
+        select: "name _id public vid_link",
+      },
+    });
+    // .populate("notebooks.scrolls", "name vid_link _id");
     res.status(200).json(workspace);
   })
 );

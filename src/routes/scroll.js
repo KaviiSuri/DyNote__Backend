@@ -30,6 +30,8 @@ router.post(
       notebook: notebook._id,
       workspace: notebook.workspace,
     });
+    notebook.scrolls.push(scroll._id);
+    await notebook.save();
     res.status(201).json(scroll);
   })
 );
