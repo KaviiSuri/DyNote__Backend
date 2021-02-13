@@ -28,8 +28,7 @@ router.post(
       // err.statusCode = 409;
       // err.name = "AuthError";
       // throw err;
-      user.populate("workspaces", "name _id");
-      await user.execPopulate();
+      await user.populate("workspaces", "name _id").execPopulate();
       res.status(200).json(user);
     }
     if (!req.body.username || req.body.username.length == 0) {
