@@ -42,7 +42,7 @@ router.post(
     user = new User({
       firebase_id: firebase_id,
       username: req.body.username,
-      workspace: [],
+      workspaces: [],
     });
 
     await user.save();
