@@ -36,7 +36,7 @@ router.post(
 
 router.get(
   "/:_id",
-  asyncHanlder(async (req, res) => {
+  asyncHandler(async (req, res) => {
     const firebase_id = decodeFirebaseToken(req.headers.firebase_token);
     let user = User.findByFirebaseId(firebase_id);
     const scroll = await Scroll.findById(req.params._id).populate(
