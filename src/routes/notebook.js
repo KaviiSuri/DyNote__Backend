@@ -22,46 +22,77 @@ router.post(
       err.name = "BadRequest";
       throw err;
     }
-    
+    // does the current user own a workspace with this id
+    if (!req.user.workspaces.includes(req.body.workspace_id)) {
+      const err = new Error("Unauthorized to view such workspace");
+      err.statusCode = 401;
+      err.name = "AuthError";
+      throw err;
+    }
     //create notebook
-    const notebook=await Notebook({
+    const notebook=await Notebook.create({
         name:req.body.name,
-        scrolls=[],
-        owner=req.user,
-        workspace=Workspace.findById(req.params._id),
-      });
-
-    Workspace.findById(req.params.id).notebook.push(notebook._id);
+        scrolls: [],
+        owner: req.user,
+        workspace: req.body.workspace_id,
+    });
+    const workspace = await Workspace.findById(req.body.workspace_id);
+    workspace.notebooks.push(notebook._id);
+    await workspace.save()
     res.status(201).json(notebook);
   })
 );
 
 router.get(
   "/:_id",
-    isAuthenticated,
-    asyncHandler(async (req, res) => {
-      // does the current user own this?
-      if (!req.user.workspace.notebook.include(req.params._id)) {
-        const err = new Error("Unauthorized to view this notebook");
-        err.statusCode = 401;
-        err.name = "AuthError";
-        throw err;
-      }
-      if(!notebook.name || notebook.name.length==0)
-        {
-          const err = new Error("Notebook is not available");
-          err.statusCode = 404;
-          err.name = "Not Found";
-          throw err;
-        }
-      // find notebook
-      const notebook = await Notebook.findById(req.params._id).populate(
-        "scroll",
-        "name _id"
-      );
-      res.status(200).json(notebook);
-    })
-  );
+  isAuthenticated,
+  asyncHandler(async (req, res) => {
+    // does the current user own this?
+    const notebook = await (await Notebook.findById(req.params._id)).populate("scrolls", "name _id public vid_link");
+    if(!notebook)
+    {
+      const err = new Error("Notebook is not available");
+      err.statusCode = 404;
+      err.name = "Not Found";
+      throw err;
+    }
+    if (notebook.owner.toString() !== req.user._id.toString()) {
+      const err = new Error("Unauthorized to view this notebook");
+      err.statusCode = 401;
+      err.name = "AuthError";
+      throw err;
+    }
+    res.status(200).json(notebook);
+  })
+);
 
+router.delete(
+  "/:_id",
+  isAuthenticated,
+  asyncHandler(async (req, res) => {
+    // query 1 - find notebook
+    const notebook = Notebook.findById(req.params._id);
+    if (!notebook) {
+      err = new Error("Notebook Not Found");
+      err.statusCode = 404;
+      err.name = "NotFound";
+      throw err;
+    }
+    if (notebook.owner.toString() !== req.user._id.toString()) {
+      err = new Error("Not Authorized to delete it");
+      err.statusCode = 401;
+      err.name = "AuthError";
+      throw err;
+    }
+    // query 2 - remvoe from parent workspace
+    const workspace = Workspace.findById(notebook.workspace);
+    workspace.notebooks = workspace.notebooks.filter(id => id.toString() !== notebook._id.toString())
+    await workspace.save()
+    // query 3 - delete the notebook
+    await Notebook.deleteOne({_id: req.params._id});
+
+    res.status(204).send();
+  })
+);
   
 module.exports = router;
