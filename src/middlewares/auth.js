@@ -16,12 +16,13 @@ const isAuthenticated = asyncHandler(async (req, res, next) => {
   if (user) {
     req.user = user;
     next();
+    // return;
+  } else {
+    const error = new Error("User Not Found");
+    error.name = "AuthError";
+    error.statusCode = 404;
+    throw error;
   }
-
-  const error = new Error("User Not Found");
-  error.name = "AuthError";
-  error.statusCode = 404;
-  throw error;
 });
 
 module.exports = {

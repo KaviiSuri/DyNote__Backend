@@ -29,7 +29,6 @@ router.post(
       // err.statusCode = 409;
       // err.name = "AuthError";
       // throw err;
-      console.log(user);
       const resUser = await User.findById(user._id).populate(
         "workspaces",
         "name _id"
