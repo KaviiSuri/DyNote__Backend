@@ -41,8 +41,11 @@ router.post(
 router.get(
   "/:_id",
   asyncHandler(async (req, res) => {
-    const firebase_id = await decodeFirebaseToken(req.headers.firebase_token);
-    let user = await User.findByFirebaseId(firebase_id);
+    let user;
+    if (req.headers.firebase_token) {
+      const firebase_id = await decodeFirebaseToken(req.headers.firebase_token);
+      user = await User.findByFirebaseId(firebase_id);
+    }
     const scroll = await Scroll.findById(req.params._id).populate("notes");
     if (!scroll) {
       err = new Error("Scroll Not Found");
@@ -92,7 +95,7 @@ router.patch(
   "/:_id",
   isAuthenticated,
   asyncHandler(async (req, res) => {
-    const scroll = Scroll.findById(req.params._id);
+    const scroll = await Scroll.findById(req.params._id);
     if (!scroll) {
       err = new Error("Scroll Not Found");
       err.statusCode = 404;
@@ -112,7 +115,7 @@ router.patch(
       scroll.public = req.body.public;
     }
     await scroll.save();
-    res.status(200).send();
+    res.status(200).send(scroll);
   })
 );
 module.exports = router;
