@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3a1c8845.chunk.css",
+    "main.js": "/static/js/main.e87d9c13.chunk.js",
+    "main.js.map": "/static/js/main.e87d9c13.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.900dd88b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.900dd88b.js.map",
+    "static/css/2.464257c2.chunk.css": "/static/css/2.464257c2.chunk.css",
+    "static/js/2.98992699.chunk.js": "/static/js/2.98992699.chunk.js",
+    "static/js/2.98992699.chunk.js.map": "/static/js/2.98992699.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.464257c2.chunk.css.map": "/static/css/2.464257c2.chunk.css.map",
+    "static/css/main.3a1c8845.chunk.css.map": "/static/css/main.3a1c8845.chunk.css.map",
+    "static/js/2.98992699.chunk.js.LICENSE.txt": "/static/js/2.98992699.chunk.js.LICENSE.txt",
+    "static/media/300.css": "/static/media/aileron-latin-300-normal.3544f3c7.woff2",
+    "static/media/index.css": "/static/media/cabin-vietnamese-400-normal.a069c332.woff2",
+    "static/media/home.css": "/static/media/home__background.57459687.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.900dd88b.js",
+    "static/css/2.464257c2.chunk.css",
+    "static/js/2.98992699.chunk.js",
+    "static/css/main.3a1c8845.chunk.css",
+    "static/js/main.e87d9c13.chunk.js"
+  ]
+}

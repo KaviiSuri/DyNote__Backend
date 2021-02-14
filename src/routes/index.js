@@ -21,10 +21,10 @@ router.get(
   })
 );
 
-router.use("/user", require("./user"));
-router.use("/workspace", require("./workspace"));
-router.use("/notebook", require("./notebook"));
-router.use("/scroll", require("./scroll"));
-router.use("/note", require("./note"));
+router.use("/api/user", require("./user"));
+router.use("/api/workspace", require("./workspace"));
+router.use("/api/notebook", require("./notebook"));
+router.use("/api/scroll", require("./scroll"));
+router.use("/api/note", require("./note"));
 
 module.exports = router;
